@@ -12,6 +12,7 @@ public class GameCanvas : MonoBehaviour {
 	public Button specialButton;
 	public Button skipButton;
 	public Button endTurnButton;
+	public Text reloadText;
 	[Header("Character Status")]
 	public RectTransform contentPanel;
 	public GameObject charStatusPrefab;

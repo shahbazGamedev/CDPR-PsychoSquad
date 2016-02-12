@@ -52,9 +52,6 @@ public class FollowMouse : Singleton<FollowMouse> {
 	private static Vector3 pos;
 	private static Image image;
 	private static CamMode mode = CamMode.Follow;
-	private float touchTime = 0f;
-	private float touchMoveDelay = 0.5f;
-	private bool touchActive = false;
 	private Vector3 touchPos = Vector3.zero;
 
 	List<GameObject> obstructions = new List<GameObject>();
@@ -87,8 +84,6 @@ public class FollowMouse : Singleton<FollowMouse> {
 
 		if (EventSystem.current.IsPointerOverGameObject()) {
 			Cursor.visible = true;
-			touchActive = false;
-			touchTime = 0f;
 			touchPos = Toolbox.InvalidV3;
 			return;
 		} else {
@@ -117,24 +112,17 @@ public class FollowMouse : Singleton<FollowMouse> {
 		}
 
 		touchPos = GetMoveDirection(Input.mousePosition);
-		if (touchPos != Toolbox.InvalidV3) {
-			SetMode(false);
-		}
 		#else
+		touchPos = Toolbox.InvalidV3;
 		for (int i = 0; i < Input.touches.Length; i++) {
 			if (Input.touches[i].phase == TouchPhase.Began) {
 				// activate the pointer
 				Active = true;
-				touchActive = true;
 			} else if (Input.touches[i].phase == TouchPhase.Ended) {
 				// deactivate pointer
 				Active = false;
 				updatePos = true;
-				touchTime = 0f;
-				touchActive = false;
 				break;
-			} else if (Input.touches[i].phase != TouchPhase.Canceled) {
-				touchPos = GetMoveDirection(Input.touches[i].position);
 			}
 
 			ray = Camera.main.ScreenPointToRay(new Vector3(Mathf.Clamp(Input.touches[i].position.x+touchOffset.x, 0f, Screen.width), 
@@ -143,24 +131,22 @@ public class FollowMouse : Singleton<FollowMouse> {
 			if (Physics.Raycast (ray, out hit, 100f, LayerMask.GetMask("Ground"))) {
 				pos = Toolbox.SnapToGrid(hit.point);
 				pos.y = hit.point.y;
-				pointerObject.transform.position = pos+pointerOffset;
+				pointerObject.transform.position = pos+pointerOffset+new Vector3(touchOffset.x, touchOffset.y, 0f);
 
 				UpdateCoverIcons();
 			} else {
 				pos = Toolbox.InvalidV3;
 			}
+
+			touchPos = GetMoveDirection(Input.touches[i].position);
 		}
 		#endif
 
-		if (touchActive && touchTime >= touchMoveDelay) {
-			if (mode != CamMode.Move) SetMode(false);
-		}
+		if (touchPos != Toolbox.InvalidV3) SetMode(false);
 
 		if (updatePos) {
-			if (pos != Toolbox.InvalidV3) {
+			if (pos != Toolbox.InvalidV3 && touchPos == Toolbox.InvalidV3) {
 				GameManager.LeftClickReceived();
-			} else if (touchActive && touchTime >= touchMoveDelay) {
-				SetMode(false);
 			}
 		}
 	}
@@ -170,7 +156,7 @@ public class FollowMouse : Singleton<FollowMouse> {
 			tr.position = Vector3.Lerp(tr.position, targetPos+followOffset, camFollowSpeed*Time.deltaTime);
 			tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.LookRotation((targetPos-tr.position).normalized), camRotateSpeed*Time.deltaTime);
 		} else if (touchPos != Toolbox.InvalidV3) {
-			tr.position = Vector3.Lerp(tr.position, tr.position-touchPos, camFollowSpeed*Time.deltaTime);
+			tr.position = Vector3.Lerp(tr.position, tr.position-touchPos, camFollowSpeed*2f*Time.deltaTime);
 			tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.LookRotation(-followOffset.normalized), camRotateSpeed*Time.deltaTime);
 		} else {
 			tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.LookRotation(-followOffset.normalized), camRotateSpeed*Time.deltaTime);

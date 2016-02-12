@@ -106,7 +106,8 @@ public class HumanTeamManager : TeamManager {
 
 			// update button interactability
 			GameManager.GameCanvas.moveButton.interactable = !currentEntity.Brain.HasMoved;
-			GameManager.GameCanvas.attackButton.interactable = !currentEntity.Brain.HasAttacked;
+			GameManager.GameCanvas.attackButton.interactable = !currentEntity.Brain.HasAttacked && currentEntity.Weapon.HasAmmoLoaded();
+			GameManager.GameCanvas.reloadText.color = ((!currentEntity.Brain.HasAttacked || currentEntity.Weapon.HasAmmoLoaded()) ? Color.white : Color.green);
 			GameManager.GameCanvas.specialButton.interactable = currentEntity.Ability.isAvailable;
 
 			// if we've done both this turn with currentEntity, end the turn
