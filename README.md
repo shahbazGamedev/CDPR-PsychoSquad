@@ -37,11 +37,11 @@ This is my solution to the programming challenge from CDPR, written in C# within
 
 ## Notes
 - Player units (special):
-  1. Assault (Nanite Cloud) - uses mid-range assault rifle, Nanite Cloud immediately heals all friendlies in a small area for a small amount.
-  2. Tech (Scan) - uses dual pistols, Scan reveals hidden enemies slightly further than sight range, including LOS-obstructed for several rounds.
-  3. CQB (Smart-Link) - uses a silenced SMG, Smart-Link grants perfect accuracy for the current round.
-  4. Scout (ThermOptic Camo) - uses long-range sniper rifle, ThermOptic Camo makes unit invisible to enemy and grants sneak attack bonus for the current round.
+  1. Green - Assault (Nanite Cloud) - uses mid-range assault rifle, Nanite Cloud immediately heals all friendlies in a small area for a small amount.
+  2. Blue - Tech (Scan) - uses dual pistols, Scan reveals hidden enemies slightly further than sight range, including LOS-obstructed for several rounds.
+  3. Yellow - CQB (Smart-Link) - uses a silenced SMG, Smart-Link grants perfect accuracy for the current round.
+  4. Purple - Scout (ThermOptic Camo) - uses long-range sniper rifle, ThermOptic Camo makes unit invisible to enemy and grants sneak attack bonus for the current round.
 - Enemy unit
-  1. Pyscho (Dermal Armor) - uses a mid-range LMG, Dermal Armor significantly reduces all damage taken.
-- Touch controls can be finicky, a slow press and release cycle should help.
+  1. Red - Pyscho (Dermal Armor) - uses a mid-range LMG, Dermal Armor significantly reduces all damage taken.
+- Touch controls in game environment will not respond after touching a UI element, a single press and release cycle off the UI will fix it.
 - Occasionally some reload actions do not occur until the next turn.
