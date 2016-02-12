@@ -1,5 +1,5 @@
 # Psycho Squad
-This is my solution to programming challenge from CDPR, written in C# within Unity 5.3.1. This project is for consideration purposes only and cannot be reused in part or whole without express permission of author.
+This is my solution to the programming challenge from CDPR, written in C# within Unity 5.3.1. This project is for consideration purposes only and cannot be reused in part or whole without express permission of author.
 
 ## Requirements
 - Create a simple turn-based game prototype featuring basic mechanics in Unity.
